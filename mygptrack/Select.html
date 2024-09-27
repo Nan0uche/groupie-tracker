@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Groupie Tracker</title>
+    <meta charset="utf-8">
+    <link type="text/css" href="../assets/Select.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/logo.webp" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/axentix@1.2.1/dist/css/axentix.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/axentix@1.2.1/dist/js/axentix.min.js"></script>
+    <script type="text/javascript" src="../assets/script.js"></script>
+
+    <script type="text/javascript">
+        // Print all the information on the serve
+        function clear() {
+            // We get all the information from Go (in string)
+            var golangVar = "{{.Image}}";
+            var NameInfo = "{{.Name}}";
+            var MembersInfo = "{{.Members}}"
+            var CreationDate = "{{.CreationDate}}"
+            var First = "{{.FirstAlbum}}"
+
+            // We remove unnecessary hooks at the beginning and at the end of the string
+            MembersInfo = MembersInfo.slice(2, -3);
+            NameInfo = NameInfo.slice(1, -2);
+
+            // We separate the information
+            const DateSplit = /\d{4}/g;
+            const FirstSplit = /\d{2}\W\d{2}\W\d{4}/g;
+            const normal = /https:\/\/groupietrackers.herokuapp.com\/api\/images\/\w*.jpeg/g;
+
+            // We put the information in arrays
+            var DateReg = CreationDate.match(DateSplit)
+            var FirstReg = First.match(FirstSplit)
+            var img = golangVar.match(normal);
+            var MembersReg = MembersInfo.split(/,\]\s\[/)
+            var naimu = NameInfo.split(',')
+            deletes()
+
+            // Loop who will add a div for each artists
+            for (i = 0; i <= 51; i++) {
+
+                // La carte de l'artiste
+                var div1 = document.createElement('div');
+                div1.setAttribute('class', 'card airforce light-1 shadow-1 dropshadow-5')
+                div1.id = i;
+                div1.onclick = function () {
+                    redirect(this.id);
+                }
+
+                // The picture frame
+                var div2 = document.createElement('div');
+                div2.setAttribute('class', 'card-image')
+
+                // The picture
+                var divimage = document.createElement('img');
+                divimage.setAttribute('class', 'img-responsive')
+                divimage.setAttribute('id', 'img')
+                divimage.setAttribute('src', img[i])
+                divimage.setAttribute('alt', 'Music')
+
+                // name of group
+                var div3 = document.createElement('div');
+                var txt3 = document.createTextNode(naimu[i])
+                div3.setAttribute('class', 'card-header')
+                div3.appendChild(txt3)
+
+                // member list
+                var div4 = document.createElement('div');
+                var txt4 = document.createTextNode(MembersReg[i])
+                div4.setAttribute('class', 'card-content')
+                div4.appendChild(txt4)
+
+                // creation date
+                var div5 = document.createElement('div');
+                var txt5 = document.createTextNode("CreationDate: " + DateReg[i])
+                div5.setAttribute('class', 'card-content')
+                div5.appendChild(txt5)
+                var parent = document.getElementById("start")
+
+                // first album
+                var div6 = document.createElement('div');
+                var txt6 = document.createTextNode(("FirstAlbum: " + FirstReg[i]))
+                div6.setAttribute('class', 'card-footer')
+                div6.appendChild(txt6)
+
+                // We assemble the divs
+                document.body.appendChild(div1);
+                parent.appendChild(div1)
+                div1.appendChild(div2)
+                div1.appendChild(div3)
+                div1.appendChild(div4)
+                div1.appendChild(div5)
+                div1.appendChild(div6)
+                div2.appendChild(divimage)
+            }
+
+        }
+
+        function redirect(id) {
+            window.location.href = '/index?' + String(id);
+        }
+
+
+        function searchCreate(i) {
+            // We get all the information from Go (in string)
+            var golangVar = "{{.Image}}";
+            var NameInfo = "{{.Name}}";
+            var MembersInfo = "{{.Members}}"
+            var CreationDate = "{{.CreationDate}}"
+            var First = "{{.FirstAlbum}}"
+
+            // We remove unnecessary hooks at the beginning and at the end of the string
+            MembersInfo = MembersInfo.slice(2, -3);
+            NameInfo = NameInfo.slice(1, -2);
+
+             // We separate the information
+            const DateSplit = /\d{4}/g;
+            const FirstSplit = /\d{2}\W\d{2}\W\d{4}/g;
+            const normal = /https:\/\/groupietrackers.herokuapp.com\/api\/images\/\w*.jpeg/g;
+
+            // We put the information in arrays
+            var DateReg = CreationDate.match(DateSplit)
+            var FirstReg = First.match(FirstSplit)
+            var img = golangVar.match(normal);
+            var MembersReg = MembersInfo.split(/,\]\s\[/)
+            var naimu = NameInfo.split(',')
+
+            // The artist's card
+            var div1 = document.createElement('div');
+            div1.setAttribute('class', 'card airforce light-1 shadow-1 dropshadow-5')
+            div1.id = i;
+            div1.onclick = function () {
+                redirect(this.id);
+            }
+            // Le cadre de la photo
+            var div2 = document.createElement('div');
+            div2.setAttribute('class', 'card-image')
+            // The picture
+            var divimage = document.createElement('img');
+            divimage.setAttribute('class', 'img-responsive')
+            divimage.setAttribute('id', 'img')
+            divimage.setAttribute('src', img[i])
+            divimage.setAttribute('alt', 'Music')
+            // name of group
+            var div3 = document.createElement('div');
+            var txt3 = document.createTextNode(naimu[i])
+            div3.setAttribute('class', 'card-header')
+            div3.appendChild(txt3)
+            // member list
+            var div4 = document.createElement('div');
+            var txt4 = document.createTextNode(MembersReg[i])
+            div4.setAttribute('class', 'card-content')
+            div4.appendChild(txt4)
+            // creation date
+            var div5 = document.createElement('div');
+            var txt5 = document.createTextNode("CreationDate: " + DateReg[i])
+            div5.setAttribute('class', 'card-content')
+            div5.appendChild(txt5)
+            var parent = document.getElementById("start")
+            // first album
+            var div6 = document.createElement('div');
+            var txt6 = document.createTextNode(("FirstAlbum: " + FirstReg[i]))
+            div6.setAttribute('class', 'card-footer')
+            div6.appendChild(txt6)
+            // We assemble the divs
+            document.body.appendChild(div1);
+            parent.appendChild(div1)
+            div1.appendChild(div2)
+            div1.appendChild(div3)
+            div1.appendChild(div4)
+            div1.appendChild(div5)
+            div1.appendChild(div6)
+            div2.appendChild(divimage)
+
+        }
+
+
+        function searchs() {
+
+            var NameInfo = "{{.Name}}";
+            var MembersInfo = "{{.Members}}"
+            var CreationDate = "{{.CreationDate}}"
+            var First = "{{.FirstAlbum}}"
+            var foundResults = false;
+            // We remove unnecessary hooks at the beginning and at the end of the string
+            MembersInfo = MembersInfo.slice(2, -3);
+            NameInfo = NameInfo.slice(1, -2)
+            // We separate the information
+            const DateSplit = /\d{4}/g;
+            const FirstSplit = /\d{2}\W\d{2}\W\d{4}/g;
+            // We put the information in arrays
+            var DateReg = CreationDate.match(DateSplit)
+            var FirstReg = First.match(FirstSplit)
+            var MembersReg = MembersInfo.split(/,\]\s\[/)
+            var naimu = NameInfo.split(',')
+
+
+            deletes()
+
+            var searchTerm = []
+            var searchs = document.getElementById("txtSearch").value.toLowerCase();
+
+            searchTerm.push(searchs)
+
+            for (i = 0; i <= 51; i++) {
+                var inclname = naimu[i].toLowerCase().includes(searchTerm) // Convert the name to lowercase before comparison
+                var incldate = DateReg[i].toLowerCase().includes(searchTerm) // Convert the date to lowercase before comparison
+                var inclfirst = FirstReg[i].toLowerCase().includes(searchTerm) // Convert the first album date to lowercase before comparison
+                var inclmember = MembersReg[i].toLowerCase().includes(searchTerm) // Convert the member names to lowercase before comparison
+
+                if (inclname || incldate || inclfirst || inclmember) {
+                    foundResults = true;
+                    searchCreate(i);
+                }
+            }
+
+            if (!foundResults) {
+                document.getElementById("no-results").style.display = "block";
+            } else {
+                // Sinon, assurez-vous que le message est caché
+                document.getElementById("no-results").style.display = "none";
+            }
+        }
+
+        // Fonction pour compter le nombre de membres dans un groupe
+        function countMembers(group) {
+            // Diviser la chaîne en fonction des virgules et supprimer les espaces inutiles
+            const membersArray = group.split(",").map(member => member.trim());
+            // Retourner le nombre d'éléments dans le tableau
+            return membersArray.length;
+        }
+
+        function membersize_down() {
+            // Supprimer les résultats précédents
+            deletes();
+
+            // Récupérer les données depuis Go
+            var MembersInfo = "{{.Members}}";
+
+            // Utiliser une expression régulière pour séparer les groupes
+            var MembersReg = MembersInfo.match(/\[.*?\]/g).map(group => group.slice(1, -1));
+
+            // Créer un tableau d'indices
+            var indices = Array.from(MembersReg.keys());
+
+            // Trier les indices en fonction du nombre de membres dans chaque groupe
+            indices.sort(function(a, b) {
+                // Extraire le nombre de membres de chaque groupe
+                const membersA = countMembers(MembersReg[a]);
+                const membersB = countMembers(MembersReg[b]);
+                // Retourner la différence pour le tri décroissant
+                return membersA - membersB;
+            });
+            
+            // Afficher les artistes dans l'ordre croissant de nombre de membres
+            for (let i = 0; i < indices.length; i++) {
+                // Appeler searchCreate avec l'index trié
+                searchCreate(indices[i]);
+            }
+        }
+
+        function membersize_up() {
+            // Supprimer les résultats précédents
+            deletes();
+
+            // Récupérer les données depuis Go
+            var MembersInfo = "{{.Members}}";
+
+            // Utiliser une expression régulière pour séparer les groupes
+            var MembersReg = MembersInfo.match(/\[.*?\]/g).map(group => group.slice(1, -1));
+
+            // Créer un tableau d'indices
+            var indices = Array.from(MembersReg.keys());
+
+            // Trier les indices en fonction du nombre de membres dans chaque groupe
+            indices.sort(function(a, b) {
+                // Extraire le nombre de membres de chaque groupe
+                const membersA = countMembers(MembersReg[a]);
+                const membersB = countMembers(MembersReg[b]);
+                // Retourner la différence pour le tri décroissant
+                return membersB - membersA;
+            });
+
+            // Afficher les artistes dans l'ordre croissant de nombre de membres
+            for (let i = 0; i < indices.length; i++) {
+                // Appeler searchCreate avec l'index trié
+                searchCreate(indices[i]);
+            }
+        }
+
+        function firstalbum_down(){
+            // Récupérer les données depuis Go
+            var FirstAlbumDates = "{{.FirstAlbum}}";
+    
+            // Séparer les dates
+            const DateSplit = /\d{2}-\d{2}-\d{4}/g;
+            var FirstReg = FirstAlbumDates.match(DateSplit);
+    
+            // Créer un objet pour associer chaque date à son index d'origine
+            var datesIndexMap = {};
+            for (let i = 0; i < FirstReg.length; i++) {
+                datesIndexMap[FirstReg[i]] = i;
+            }
+
+            // Trier les dates de sortie du premier album dans l'ordre croissant
+            FirstReg.sort((a, b) => {
+                const dateA = new Date(a.split("-").reverse().join("-"));
+                const dateB = new Date(b.split("-").reverse().join("-"));
+                return dateA - dateB;
+            });
+
+            // Supprimer les résultats précédents
+            deletes();
+
+            // Utiliser un ensemble pour garder une trace des indices des artistes déjà affichés
+            var displayedArtists = new Set();
+
+            // Afficher les artistes dans l'ordre croissant de date de sortie du premier album
+            for (let i = 0; i < FirstReg.length; i++) {
+                // Utiliser l'index associé à la date triée pour récupérer les autres informations de l'artiste
+                const index = datesIndexMap[FirstReg[i]];
+                // Vérifier si l'artiste correspondant à cet index n'a pas déjà été affiché
+                if (!displayedArtists.has(index)) {
+                    searchCreate(index);
+                    // Ajouter l'index de l'artiste affiché à l'ensemble des artistes déjà affichés
+                    displayedArtists.add(index);
+                }
+            }
+        }
+
+        function firstalbum_up(){
+            // Récupérer les données depuis Go
+            var FirstAlbumDates = "{{.FirstAlbum}}";
+    
+            // Séparer les dates
+            const DateSplit = /\d{2}-\d{2}-\d{4}/g;
+            var FirstReg = FirstAlbumDates.match(DateSplit);
+    
+            // Créer un objet pour associer chaque date à son index d'origine
+            var datesIndexMap = {};
+            for (let i = 0; i < FirstReg.length; i++) {
+                datesIndexMap[FirstReg[i]] = i;
+            }
+
+            // Trier les dates de sortie du premier album dans l'ordre décroissant
+            FirstReg.sort((a, b) => {
+                const dateA = new Date(a.split("-").reverse().join("-"));
+                const dateB = new Date(b.split("-").reverse().join("-"));
+                return dateB - dateA;
+            });
+
+            // Supprimer les résultats précédents
+            deletes();
+
+            // Utiliser un ensemble pour garder une trace des indices des artistes déjà affichés
+            var displayedArtists = new Set();
+
+            // Afficher les artistes dans l'ordre décroissant de date de sortie du premier album
+            for (let i = 0; i < FirstReg.length; i++) {
+                // Utiliser l'index associé à la date triée pour récupérer les autres informations de l'artiste
+                const index = datesIndexMap[FirstReg[i]];
+                // Vérifier si l'artiste correspondant à cet index n'a pas déjà été affiché
+                if (!displayedArtists.has(index)) {
+                    searchCreate(index);
+                    // Ajouter l'index de l'artiste affiché à l'ensemble des artistes déjà affichés
+                    displayedArtists.add(index);
+                }
+            }
+        }
+
+        function creationdate_down() {
+            // Récupérer les données depuis Go
+            var CreationDate = "{{.CreationDate}}";
+    
+            // Séparer les dates
+            const DateSplit = /\d{4}/g;
+            var DateReg = CreationDate.match(DateSplit);
+    
+            // Créer un objet pour associer chaque date à son index d'origine
+            var datesIndexMap = {};
+            for (let i = 0; i < DateReg.length; i++) {
+                datesIndexMap[DateReg[i]] = i;
+            }
+
+            // Trier les dates de création dans l'ordre croissant
+            DateReg.sort((a, b) => a - b);
+
+            // Supprimer les résultats précédents
+            deletes();
+
+            // Utiliser un ensemble pour garder une trace des indices des artistes déjà affichés
+            var displayedArtists = new Set();
+
+            // Afficher les artistes dans l'ordre croissant de date de création
+            for (let i = 0; i < DateReg.length; i++) {
+                // Utiliser l'index associé à la date triée pour récupérer les autres informations de l'artiste
+                const index = datesIndexMap[DateReg[i]];
+                // Vérifier si l'artiste correspondant à cet index n'a pas déjà été affiché
+                if (!displayedArtists.has(index)) {
+                    searchCreate(index);
+                    // Ajouter l'index de l'artiste affiché à l'ensemble des artistes déjà affichés
+                    displayedArtists.add(index);
+                }
+            }
+        }
+
+        function creationdate_up() {
+            // Récupérer les données depuis Go
+            var CreationDate = "{{.CreationDate}}";
+    
+            // Séparer les dates
+            const DateSplit = /\d{4}/g;
+            var DateReg = CreationDate.match(DateSplit);
+    
+            // Créer un objet pour associer chaque date à son index d'origine
+            var datesIndexMap = {};
+            for (let i = 0; i < DateReg.length; i++) {
+                datesIndexMap[DateReg[i]] = i;
+            }
+
+            // Trier les dates de création dans l'ordre décroissant
+            DateReg.sort((a, b) => b - a);
+
+            // Supprimer les résultats précédents
+            deletes();
+
+            // Utiliser un ensemble pour garder une trace des indices des artistes déjà affichés
+            var displayedArtists = new Set();
+
+            // Afficher les artistes dans l'ordre décroissant de date de création
+            for (let i = 0; i < DateReg.length; i++) {
+                // Utiliser l'index associé à la date triée pour récupérer les autres informations de l'artiste
+                const index = datesIndexMap[DateReg[i]];
+                // Vérifier si l'artiste correspondant à cet index n'a pas déjà été affiché
+                if (!displayedArtists.has(index)) {
+                    searchCreate(index);
+                    // Ajouter l'index de l'artiste affiché à l'ensemble des artistes déjà affichés
+                    displayedArtists.add(index);
+                }
+            }
+        }
+
+        function reset() {
+            // Supprimer tous les éléments enfants de l'élément avec l'ID "start"
+            var parent = document.getElementById("start");
+            while (parent.firstChild) {
+                parent.removeChild(parent.firstChild);
+            }
+            clear();
+        }       
+    </script>
+</head>
+
+<body class="layout airforce dark-4 with-sidenav fixed-sidenav">
+    <header>
+        <nav class="navbar airforce dark-5">
+            <a href="/" class="navbar-brand ml-0.5">Groupie Tracker</a>
+            <div class="navbar-menu ml-auto">
+                <form action="/hms/accommodations" method="GET" onSubmit="return false">
+                    <div class="row">
+                        <div class="col-xs-6 col-md-4">
+                            <div class="input-group">
+                                <input type="search" class="form-control navbar-btn" placeholder="Search" id="txtSearch" oninput="searchs()" />
+                            </div>                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <div id="example-sidenav" data-ax="sidenav" class="sidenav shadow-1 large fixed airforce dark-5">
+        <div class="sidenav-header">
+            <button data-target="example-sidenav" class="sidenav-trigger"><i class="fas fa-times"></i></button>
+            <img class="sidenav-logo" src="../assets/logo.webp" alt="Logo" id="logoside" />
+        </div>
+        <a onclick="reset()" class="sidenav-link">Reset</a>
+        <a onclick="membersize_down()" class="sidenav-link">Member Size ▼</a>
+        <a onclick="membersize_up()" class="sidenav-link">Member Size ▲</a>
+        <a onclick="firstalbum_down()" class="sidenav-link">First Album ▼</a>
+        <a onclick="firstalbum_up()" class="sidenav-link">First Album ▲</a>
+        <a onclick="creationdate_down()" class="sidenav-link">Creation Date ▼</a>
+        <a onclick="creationdate_up()" class="sidenav-link">Creation Date ▲</a>
+    </div>
+
+    <main>
+        <!-- Code here the main content -->
+        <button data-target="example-sidenav" class="btn rounded-1 press amaranth dark-1 sidenav-trigger hide-md-up">
+            Open sidenav
+        </button>
+        <div class="grix xs1 md2 lg3" id="start">
+            <script type="text/javascript">
+                clear();
+            </script>
+        </div>
+        <div id="no-results" style="display: none;">No results found</div>
+    </main>
+
+    <footer class="footer airforce dark-5">
+        <marquee>
+            UNE SUPER BANDEROLE :
+            <img src="../assets/logo.webp" height="30px" width="30px">
+            WAOOOOOOUUUUUUUUUU
+        </marquee>
+
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Groupie Tracker</title>
+    <meta charset="utf-8">
+    <link type="text/css" href="../assets/style.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/logo.webp" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/axentix@1.2.1/dist/css/axentix.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script type="text/javascript" src="../assets/script.js"></script>
+
+    <script type="text/javascript">
+        function getParameters() {
+            let urlcourante = document.location.href;
+            urlcourante = urlcourante.replace(/\/$/, "");
+            // load in a variable the portion behind the last slash
+            queue_url = urlcourante.substring(urlcourante.lastIndexOf("/") + 1);
+            let reg = /(?<=\?).*/g;
+            return queue_url.match(reg)[0]
+        }
+
+        console.log(getParameters())
+
+        // Print all the information on the serve
+        function create() {
+            let id = getParameters();
+            if (id > 51 || id < 0) {
+                id = 0
+            }
+            // We get all the information from Go (in string)
+            let golanglet = "{{.Image}}";
+            let NameInfo = "{{.Name}}";
+            let MembersInfo = "{{.Members}}"
+            let CreationDate = "{{.CreationDate}}"
+            let First = "{{.FirstAlbum}}"
+            let relation = "," + "{{.Relation}}"
+
+            // We remove unnecessary hooks at the beginning and at the end of the string
+            MembersInfo = MembersInfo.slice(2, -3);
+            NameInfo = NameInfo.slice(1, -2);
+            relation = relation.slice(3, -3);
+
+
+            // We separate the information
+            const DateSplit = /\d{4}/g;
+            const FirstSplit = /\d{2}\W\d{2}\W\d{4}/g;
+            const normal = /https:\/\/groupietrackers.herokuapp.com\/api\/images\/\w*.jpeg/g;
+
+            // We put the information in arrays
+            let DateReg = CreationDate.match(DateSplit)
+            let FirstReg = First.match(FirstSplit)
+            let img = golanglet.match(normal);
+            let MembersReg = MembersInfo.split(/,\]\s\[/)
+            let naimu = NameInfo.split(',')
+            let dateLocation = relation.split(/\]\s\[/)
+
+            
+            let LieuDatePourToi = dateLocation[id]
+            let LieuDatePourMoi = dateLocation[id]
+
+            // Date [0] = "", so started at index 1 to get the dates.
+            let regDate = /,[\w*\-\w*]*,/g;
+            let Date = LieuDatePourToi.split(regDate);
+            let Lieu = LieuDatePourMoi.split(/,[\d{2}\W\d{2}\W\d{4}]*/);
+
+            // The artist's card
+            let div1 = document.createElement('div');
+            // The picture frame
+            let div2 = document.createElement('div');
+            // The picture
+            let divimage = document.createElement('img');
+            divimage.setAttribute('class', 'imageIndexBigFatStyle')
+            divimage.setAttribute('id', 'img')
+            divimage.setAttribute('src', img[id])
+            divimage.setAttribute('alt', 'Music')
+
+
+            // name of group
+            let div3 = document.createElement('div');
+            let txt3 = document.createTextNode(naimu[id])
+            div3.setAttribute('class', 'ArtistBigFatNaMu')
+            div3.appendChild(txt3)
+
+
+
+            let parent = document.getElementById("start")
+
+            let div7 = document.createElement('div');
+            let txt7 = document.createTextNode(("Concert : "));
+            div7.appendChild(txt7)
+            div7.setAttribute('class', 'concertPart')
+
+            let div8 = document.createElement('div');
+            div8.setAttribute('class', 'concertInfos')
+            for (i = 0; i <= Date.length - 1; i++) {
+                let divnul = document.createElement('div');
+                let txt8 = document.createTextNode(Lieu[i])
+                divnul.id = i + 100
+                divnul.onclick = function () {
+                    var id = this.getAttribute('id');
+                    document.getElementById(id - 100).style.display = "block";
+                }
+                divnul.appendChild(txt8)
+                div8.appendChild(divnul)
+            }
+
+            let div9 = document.createElement('div');
+
+            div9.setAttribute('class', 'concertInfos')
+            div9.setAttribute('id', 'date')
+            for (i = 0; i <= Date.length - 1; i++) {
+                let divnul2 = document.createElement('div');
+                divnul2.id = i
+                let txt9 = document.createTextNode(Date[i])
+                divnul2.appendChild(txt9)
+                div9.appendChild(divnul2)
+                if (i == 0) {
+                    Date[i] = Date[i].slice(20)
+                }
+
+            }
+
+            // We assemble the divs
+            document.body.appendChild(div1);
+            parent.appendChild(div1)
+            div1.appendChild(div3)
+            div1.appendChild(div2)
+            div1.appendChild(div7)
+            div1.appendChild(div8)
+            div1.appendChild(div9)
+            div2.appendChild(divimage)
+        }
+    </script>
+</head>
+
+<body class="layout airforce dark-4">
+    <header>
+        <nav class="navbar airforce dark-5">
+            <a href="./index.html" class="navbar-brand ml-0.5">Groupie Tracker</a>
+        </nav>
+    </header>
+
+    <main>
+        <div id="start">
+            <script type="text/javascript">
+                create();
+            </script>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/axentix@1.2.1/dist/js/axentix.min.js"></script>
+    <footer class="footer airforce dark-5">
+    </footer>
+</body>
+
+</html>

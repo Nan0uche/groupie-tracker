@@ -1,0 +1,67 @@
+  
+body,
+html {
+    height: 100%;
+}
+    
+body {
+    overflow-x: hidden;
+    text-align: center;
+}
+
+#logo {
+    height: auto;
+    width: 30%;
+    margin-left: 30%;
+    margin-top: -4%;
+}
+
+.btn {
+    margin-left: 2%;
+    background-color: darkgrey !important;
+    margin-bottom: 10% !important;
+    background-color: dodgerblue !important;
+}
+    
+.navbar-brand {
+    margin-left: 3%;
+}
+    
+#txtSearch {
+    width: 20vw;
+}
+    
+.navbar-link {
+    margin-bottom: 1%;
+    height: fit-content;
+}
+
+.ArtistBigFatNaMu {
+    text-align: center;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 80px;
+    color: gold;
+}
+    
+.imageIndexBigFatStyle {
+    width: 40% !important;
+    height: 40% !important;
+    text-align: center !important;
+    margin: auto !important;
+    display: flex !important;
+}
+
+.concertPart {
+    text-align: center;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 60px;
+    color: gold;
+}
+
+.concertInfos {
+    text-align: center;
+    font-size: 26px;
+    font-family: "Times New Roman", Times, serif;
+    white-space: pre-wrap;
+    display: inline-block;
+}
